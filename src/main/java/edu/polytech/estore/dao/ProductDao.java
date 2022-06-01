@@ -6,15 +6,15 @@ import edu.polytech.estore.model.Product;
 
 public interface ProductDao {
 
-    public List<Product> getProducts();
+    List<Product> getProducts();
 
-    public Product getProduct(Long productId);
+    Product getProduct(Long productId);
 
-    public List<Product> getProductsOfCategory(String category);
+    List<Product> getProductsOfCategory(String category);
 
-    public void deleteProduct(Long productId);
+    void deleteProduct(Long productId);
 
-    public void createProduct(Product product);
+    void createProduct(Product product);
 
-    public void updateProduct(Product product);
+    void updateProduct(Product product);
 }

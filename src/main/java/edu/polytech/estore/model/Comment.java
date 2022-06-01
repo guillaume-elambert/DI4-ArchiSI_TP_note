@@ -10,14 +10,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entité JPA représentant un commentaire sur un produit.
+ * EntitÃ© JPA reprÃ©sentant un commentaire sur un produit.
  *
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement
 public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;

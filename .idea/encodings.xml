@@ -5,6 +5,10 @@
     <file url="file://$PROJECT_DIR$/WebService/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/edu/polytech/estore/business/StoreBusinessImpl.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/edu/polytech/estore/business/StoreBusinessLocal.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/edu/polytech/estore/model/Product.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/META-INF/MANIFEST.MF" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/products.jsp" charset="UTF-8" />
   </component>
 </project>

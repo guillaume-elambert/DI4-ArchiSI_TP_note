@@ -1,5 +1,7 @@
 package edu.polytech.estore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,7 +13,7 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Entité JPA représentant un produit.
+ * EntitÃ© JPA reprÃ©sentant un produit.
  *
  */
 @Entity
@@ -26,6 +28,8 @@ public class Product implements Serializable {
     private String label;
     private String category;
     private Double priceInEuro;
+    @Transient
+    private Double priceInCurrency;
     private Integer stock;
     @Transient
     private List<Comment> comments = null;
@@ -70,6 +74,14 @@ public class Product implements Serializable {
 
     public void setPriceInEuro(Double priceInEuro) {
         this.priceInEuro = priceInEuro;
+    }
+
+    public Double getPriceInCurrency() {
+        return priceInCurrency;
+    }
+
+    public void setPriceInCurrency(Double priceInCurrency) {
+        this.priceInCurrency = priceInCurrency;
     }
 
     public Integer getStock() {

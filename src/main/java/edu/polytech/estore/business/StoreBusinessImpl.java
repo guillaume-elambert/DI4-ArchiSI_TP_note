@@ -44,10 +44,10 @@ public class StoreBusinessImpl implements StoreBusinessLocal {
     }
 
     /**
-     * @param asc      Croissant (<code>true</code>) ou d�croissant
+     * @param asc      Croissant (<code>true</code>) ou décroissant
      *                 (<code>false</code>) ?
-     * @param products La liste � trier.
-     * @return La liste en param�tre tri�e de mani�re croissante ou d�croissante.
+     * @param products La liste à trier.
+     * @return La liste en paramètre triée de manière croissante ou décroissante.
      */
     private List<Product> sortList(Boolean asc, List<Product> products) {
         if (asc) {

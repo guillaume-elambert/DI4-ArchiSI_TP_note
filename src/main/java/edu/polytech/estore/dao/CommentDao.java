@@ -6,9 +6,9 @@ import edu.polytech.estore.model.Comment;
 
 public interface CommentDao {
 
-    public List<Comment> getComments(Long productId);
+    List<Comment> getComments(Long productId);
 
-    public Comment getComment(Long commentId);
+    Comment getComment(Long commentId);
 
-    public void deleteComments(Long productId);
+    void deleteComments(Long productId);
 }

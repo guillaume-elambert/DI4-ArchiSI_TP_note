@@ -1,14 +1,15 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>EStore</title>
 </head>
 <body>
 	<table border="1">
 		<tr>
-			<th>Catégorie</th>
+			<th>CatÃ©gorie</th>
 			<th>Produit</th>
 			<th>Prix (EUR)</th>
 			<th>Stock</th>
