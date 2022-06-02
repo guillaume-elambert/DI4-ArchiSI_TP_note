@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html data-color-mode="dark" data-light-theme="light" data-dark-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --svg-size: 2rem;
+            --rounded-corner: 0.5em;
+        }
+
+        summary>h1,
+        summary>h2,
+        summary>h3,
+        summary>h4,
+        summary>h5,
+        summary>h6 {
+            margin-left: 1rem;
+            display: inline !important;
+        }
+
+        #theme-chooser {
+            border: solid 2px var(--color-scale-gray-9);
+            border-bottom-right-radius: var(--rounded-corner);
+            border-bottom-left-radius: var(--rounded-corner);
+            border-top: none;
+            /*pointer-events: none;*/
+            position: fixed;
+            top: 0;
+            right: 1rem;
+            width: calc(var(--svg-size) * 5);
+            display: flex;
+            justify-content: space-around;
+            /*color-scheme: light;*/
+            background: var(--color-scale-gray-2);
+        }
+
+        #theme-chooser button {
+            padding: 0;
+            margin: 2px;
+            width: var(--svg-size);
+            height: var(--svg-size);
+            border-radius: var(--rounded-corner);
+            background-color: transparent;
+            border: none;
+        }
+
+        #theme-chooser img {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--rounded-corner);
+            cursor: pointer !important;
+        }
+
+        #theme-chooser button.active {
+            background: var(--color-scale-gray-5);
+        }
+    </style>
+    <link href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css" rel="stylesheet" />
+    <script defer>
+        const root = document.querySelector("html");
+        function setActive(element) {
+            var active = document.querySelector("#theme-chooser > .active")
+            if (active)
+                active.classList.toggle("active");
+            element.classList.toggle("active");
+        }
+
+        function setTheme(colorMode, dataLight, dataDark) {
+            root.setAttribute("data-color-mode", colorMode);
+            root.setAttribute("data-light-theme", dataLight);
+            root.setAttribute("data-dark-theme", dataDark);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="theme-chooser">
+        <button id="light" class="" onclick="setActive(this); setTheme('light', 'light', 'dark')"><img
+                src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0ibm9uZSI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik04NS42Nzc1LDEzLjY1MjVjLTAuMTQ3ODEsMC4wMjY4OCAtMC4yOTU2MiwwLjA2NzE5IC0wLjQzLDAuMTA3NWMtMS41OTkwNiwwLjM2MjgxIC0yLjcyNzgxLDEuODAwNjMgLTIuNjg3NSwzLjQ0djIwLjY0Yy0wLjAxMzQ0LDEuMjM2MjUgMC42MzE1NiwyLjM5MTg4IDEuNzA2NTYsMy4wMjM0NGMxLjA3NSwwLjYxODEzIDIuMzkxODcsMC42MTgxMyAzLjQ2Njg3LDBjMS4wNzUsLTAuNjMxNTYgMS43MiwtMS43ODcxOSAxLjcwNjU2LC0zLjAyMzQ0di0yMC42NGMwLjA0MDMxLC0wLjk5NDM3IC0wLjM2MjgxLC0xLjk0ODQ0IC0xLjA3NSwtMi42MjAzMWMtMC43MjU2MiwtMC42ODUzMSAtMS43MDY1NiwtMS4wMjEyNSAtMi42ODc1LC0wLjkyNzE5ek0zNi42NTc1LDMzLjg2MjVjLTEuMjksMC4yMjg0NCAtMi4zMjQ2OSwxLjE2OTA2IC0yLjY4NzUsMi40MTg3NWMtMC4zNjI4MSwxLjI2MzEzIDAuMDEzNDQsMi42MDY4OCAwLjk2NzUsMy40OTM3NWwxNC42MiwxNC42MmMwLjgzMzEzLDEuMDIxMjUgMi4xNjM0NCwxLjQ5MTU2IDMuNDUzNDQsMS4xOTU5NGMxLjI3NjU2LC0wLjI5NTYyIDIuMjg0MzgsLTEuMzAzNDQgMi41OCwtMi41OGMwLjI5NTYzLC0xLjI5IC0wLjE3NDY5LC0yLjYyMDMxIC0xLjE5NTk0LC0zLjQ1MzQ0bC0xNC42MiwtMTQuNjJjLTAuNzEyMTksLTAuNzY1OTQgLTEuNzQ2ODcsLTEuMTU1NjIgLTIuNzk1LC0xLjA3NWMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwek0xMzQuMjY3NSwzMy44NjI1Yy0wLjc3OTM3LDAuMTA3NSAtMS41MDUsMC40OTcxOSAtMi4wNDI1LDEuMDc1bC0xNC42MiwxNC42MmMtMS4wMjEyNSwwLjgzMzEzIC0xLjQ5MTU2LDIuMTYzNDQgLTEuMTk1OTQsMy40NTM0NGMwLjI5NTYyLDEuMjc2NTYgMS4zMDM0NCwyLjI4NDM4IDIuNTgsMi41OGMxLjI5LDAuMjk1NjMgMi42MjAzMSwtMC4xNzQ2OSAzLjQ1MzQ0LC0xLjE5NTk0bDE0LjYyLC0xNC42MmMxLjA3NSwtMS4wMjEyNSAxLjM4NDA2LC0yLjYyMDMxIDAuNzUyNSwtMy45NjQwNmMtMC42NDUsLTEuMzU3MTkgLTIuMDY5MzcsLTIuMTM2NTYgLTMuNTQ3NSwtMS45NDg0NHpNODUuNjc3NSw1MS42Yy0wLjEwNzUsMC4wMjY4OCAtMC4yMTUsMC4wNjcxOSAtMC4zMjI1LDAuMTA3NWMtMC4yMTUsMC4wMTM0NCAtMC40MywwLjA1Mzc1IC0wLjY0NSwwLjEwNzVjLTAuMDQwMzEsMC4wNDAzMSAtMC4wNjcxOSwwLjA2NzE5IC0wLjEwNzUsMC4xMDc1Yy0xOC4yNDgxMiwwLjc3OTM4IC0zMy4wMDI1LDE1LjY0MTI1IC0zMy4wMDI1LDM0LjA3NzVjMCwxOC45MzM0NCAxNS40NjY1NiwzNC40IDM0LjQsMzQuNGMxOC45MzM0NCwwIDM0LjQsLTE1LjQ2NjU2IDM0LjQsLTM0LjRjMCwtMTguMzY5MDYgLTE0LjYzMzQ0LC0zMy4xNzcxOSAtMzIuNzg3NSwtMzQuMDc3NWMtMC4xMjA5NCwwIC0wLjIwMTU2LC0wLjEwNzUgLTAuMzIyNSwtMC4xMDc1Yy0wLjM0OTM3LC0wLjEzNDM3IC0wLjcxMjE5LC0wLjIwMTU2IC0xLjA3NSwtMC4yMTVjLTAuMDY3MTksMCAtMC4xNDc4MSwwIC0wLjIxNSwwYy0wLjEwNzUsMCAtMC4yMTUsMCAtMC4zMjI1LDB6TTg1Ljc4NSw1OC40OGMwLjA2NzE5LDAgMC4xNDc4MSwwIDAuMjE1LDBjMC4xMDc1LDAgMC4yMTUsMCAwLjMyMjUsMGMxNS4wNSwwLjE3NDY5IDI3LjE5NzUsMTIuNDI5NjkgMjcuMTk3NSwyNy41MmMwLDE1LjIxMTI1IC0xMi4zMDg3NSwyNy41MiAtMjcuNTIsMjcuNTJjLTE1LjE5NzgxLDAgLTI3LjUyLC0xMi4zMDg3NSAtMjcuNTIsLTI3LjUyYzAsLTE1LjEzMDYyIDEyLjIwMTI1LC0yNy4zOTkwNiAyNy4zMDUsLTI3LjUyek0xNi4yMzI1LDgyLjU2Yy0xLjg5NDY5LDAuMjY4NzUgLTMuMjI1LDIuMDI5MDYgLTIuOTU2MjUsMy45MjM3NWMwLjI2ODc1LDEuODk0NjkgMi4wMjkwNiwzLjIyNSAzLjkyMzc1LDIuOTU2MjVoMjAuNjRjMS4yMzYyNSwwLjAxMzQ0IDIuMzkxODgsLTAuNjMxNTYgMy4wMjM0NCwtMS43MDY1NmMwLjYxODEzLC0xLjA3NSAwLjYxODEzLC0yLjM5MTg3IDAsLTMuNDY2ODdjLTAuNjMxNTYsLTEuMDc1IC0xLjc4NzE5LC0xLjcyIC0zLjAyMzQ0LC0xLjcwNjU2aC0yMC42NGMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwYy0wLjEwNzUsMCAtMC4yMTUsMCAtMC4zMjI1LDBjLTAuMTA3NSwwIC0wLjIxNSwwIC0wLjMyMjUsMHpNMTMzLjE5MjUsODIuNTZjLTEuODk0NjksMC4yNjg3NSAtMy4yMjUsMi4wMjkwNiAtMi45NTYyNSwzLjkyMzc1YzAuMjY4NzUsMS44OTQ2OSAyLjAyOTA2LDMuMjI1IDMuOTIzNzUsMi45NTYyNWgyMC42NGMxLjIzNjI1LDAuMDEzNDQgMi4zOTE4OCwtMC42MzE1NiAzLjAyMzQ0LC0xLjcwNjU2YzAuNjE4MTMsLTEuMDc1IDAuNjE4MTMsLTIuMzkxODcgMCwtMy40NjY4N2MtMC42MzE1NiwtMS4wNzUgLTEuNzg3MTksLTEuNzIgLTMuMDIzNDQsLTEuNzA2NTZoLTIwLjY0Yy0wLjEwNzUsMCAtMC4yMTUsMCAtMC4zMjI1LDBjLTAuMTA3NSwwIC0wLjIxNSwwIC0wLjMyMjUsMGMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwek01MS42LDExNi41M2MtMC43NzkzNywwLjEwNzUgLTEuNTA1LDAuNDk3MTkgLTIuMDQyNSwxLjA3NWwtMTQuNjIsMTQuNjJjLTEuMDIxMjUsMC44MzMxMyAtMS40OTE1NiwyLjE2MzQ0IC0xLjE5NTk0LDMuNDUzNDRjMC4yOTU2MiwxLjI3NjU2IDEuMzAzNDQsMi4yODQzOCAyLjU4LDIuNThjMS4yOSwwLjI5NTYzIDIuNjIwMzEsLTAuMTc0NjkgMy40NTM0NCwtMS4xOTU5NGwxNC42MiwtMTQuNjJjMS4wMjEyNSwtMC45ODA5NCAxLjMzMDMxLC0yLjQ5OTM3IDAuNzc5MzgsLTMuODAyODFjLTAuNTM3NSwtMS4zMDM0NCAtMS44NDA5NCwtMi4xMzY1NiAtMy4yNTE4OCwtMi4xMDk2OWMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwek0xMTkuMzI1LDExNi41M2MtMS4yOSwwLjIyODQ0IC0yLjMyNDY5LDEuMTY5MDYgLTIuNjg3NSwyLjQxODc1Yy0wLjM2MjgxLDEuMjYzMTMgMC4wMTM0NCwyLjYwNjg4IDAuOTY3NSwzLjQ5Mzc1bDE0LjYyLDE0LjYyYzAuODMzMTMsMS4wMjEyNSAyLjE2MzQ0LDEuNDkxNTYgMy40NTM0NCwxLjE5NTk0YzEuMjc2NTYsLTAuMjk1NjIgMi4yODQzOCwtMS4zMDM0NCAyLjU4LC0yLjU4YzAuMjk1NjMsLTEuMjkgLTAuMTc0NjksLTIuNjIwMzEgLTEuMTk1OTQsLTMuNDUzNDRsLTE0LjYyLC0xNC42MmMtMC42NDUsLTAuNjg1MzEgLTEuNTMxODcsLTEuMDYxNTYgLTIuNDcyNSwtMS4wNzVjLTAuMTA3NSwwIC0wLjIxNSwwIC0wLjMyMjUsMGMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwek04NS42Nzc1LDEzMC42MTI1Yy0wLjE0NzgxLDAuMDI2ODggLTAuMjk1NjIsMC4wNjcxOSAtMC40MywwLjEwNzVjLTEuNTk5MDYsMC4zNjI4MSAtMi43Mjc4MSwxLjgwMDYzIC0yLjY4NzUsMy40NHYyMC42NGMtMC4wMTM0NCwxLjIzNjI1IDAuNjMxNTYsMi4zOTE4OCAxLjcwNjU2LDMuMDIzNDRjMS4wNzUsMC42MTgxMyAyLjM5MTg3LDAuNjE4MTMgMy40NjY4NywwYzEuMDc1LC0wLjYzMTU2IDEuNzIsLTEuNzg3MTkgMS43MDY1NiwtMy4wMjM0NHYtMjAuNjRjMC4wNDAzMSwtMC45OTQzNyAtMC4zNjI4MSwtMS45NDg0NCAtMS4wNzUsLTIuNjIwMzFjLTAuNzI1NjIsLTAuNjg1MzEgLTEuNzA2NTYsLTEuMDIxMjUgLTIuNjg3NSwtMC45MjcxOXoiPjwvcGF0aD48L2c+PC9nPjwvc3ZnPg==" /></button>
+        <button id="dark_dimmed" class="" onclick="setActive(this); setTheme('dark', 'light', 'dark_dimmed')"><img
+                src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0ibm9uZSI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik02OC43NDYyNSw2LjgzMjk3Yy0xLjg5NzIyLDAuMDI5NjYgLTMuNDEyMjMsMS41ODk3NiAtMy4zODYyNSwzLjQ4NzAzdjE3LjJjLTAuMDE3NTQsMS4yNDA1OSAwLjYzNDI1LDIuMzk0NTIgMS43MDU4LDMuMDE5OTNjMS4wNzE1NSwwLjYyNTQxIDIuMzk2ODQsMC42MjU0MSAzLjQ2ODM5LDBjMS4wNzE1NSwtMC42MjU0MSAxLjcyMzM1LC0xLjc3OTM1IDEuNzA1OCwtMy4wMTk5M3YtMTcuMmMwLjAxMjczLC0wLjkyOTgzIC0wLjM1MTQ5LC0xLjgyNTIyIC0xLjAwOTY3LC0yLjQ4MjE0Yy0wLjY1ODE5LC0wLjY1NjkyIC0xLjU1NDI3LC0xLjAxOTQyIC0yLjQ4NDA4LC0xLjAwNDg5ek0xNTguMTcyODEsMTAuMjg2NDFjLTAuODkzNzEsMC4wMjY2MyAtMS43NDE5NCwwLjQwMDE0IC0yLjM2NSwxLjA0MTQxbC0xNDQuNDgsMTQ0LjQ4Yy0wLjg5ODY2LDAuODYyODEgLTEuMjYwNjYsMi4xNDQwNCAtMC45NDYzOSwzLjM0OTU1YzAuMzE0MjcsMS4yMDU1MSAxLjI1NTcsMi4xNDY5NCAyLjQ2MTIxLDIuNDYxMjFjMS4yMDU1MSwwLjMxNDI3IDIuNDg2NzQsLTAuMDQ3NzMgMy4zNDk1NSwtMC45NDYzOWwxNDQuNDgsLTE0NC40OGMxLjAxNzQyLC0wLjk4ODk3IDEuMzIzMzMsLTIuNTAxMTEgMC43NzAzMywtMy44MDc3OGMtMC41NTI5OSwtMS4zMDY2NyAtMS44NTE0NSwtMi4xMzk4MyAtMy4yNjk3MSwtMi4wOTh6TTI3LjQxMjUsMjMuOTcyNWMtMS4zOTk4MiwwLjAwMDM3IC0yLjY1OTg0LDAuODQ4ODQgLTMuMTg2NTgsMi4xNDU3N2MtMC41MjY3NCwxLjI5NjkzIC0wLjIxNTE2LDIuNzgzNyAwLjc4Nzk5LDMuNzYwMDFsMTIuMTY3NjYsMTIuMTY3NjZjMC44NjI4MSwwLjg5ODY3IDIuMTQ0MDQsMS4yNjA2OCAzLjM0OTU2LDAuOTQ2NDFjMS4yMDU1MiwtMC4zMTQyNyAyLjE0Njk2LC0xLjI1NTcgMi40NjEyMiwtMi40NjEyMmMwLjMxNDI3LC0xLjIwNTUyIC0wLjA0Nzc0LC0yLjQ4Njc1IC0wLjk0NjQxLC0zLjM0OTU2bC0xMi4xNjc2NiwtMTIuMTY3NjZjLTAuNjQ3NjUsLTAuNjY1NzUgLTEuNTM2OTgsLTEuMDQxMzUgLTIuNDY1NzgsLTEuMDQxNDF6TTExMC4wODY3MiwyMy45NzI1Yy0wLjg5MzcxLDAuMDI2NjMgLTEuNzQxOTQsMC40MDAxNCAtMi4zNjUsMS4wNDE0MWwtMTIuMTY3NjUsMTIuMTY3NjZjLTAuODk4NjcsMC44NjI4MSAtMS4yNjA2OCwyLjE0NDA0IC0wLjk0NjQxLDMuMzQ5NTZjMC4zMTQyNywxLjIwNTUyIDEuMjU1NywyLjE0Njk2IDIuNDYxMjIsMi40NjEyMmMxLjIwNTUyLDAuMzE0MjcgMi40ODY3NSwtMC4wNDc3NCAzLjM0OTU2LC0wLjk0NjQxbDEyLjE2NzY2LC0xMi4xNjc2NmMxLjAxNzQyLC0wLjk4ODk3IDEuMzIzMzMsLTIuNTAxMTEgMC43NzAzMywtMy44MDc3OGMtMC41NTMsLTEuMzA2NjcgLTEuODUxNDYsLTIuMTM5ODMgLTMuMjY5NzEsLTIuMDk4ek02OC44MDY3MiwzNy44NjY4N2MtNy45Mjc5MSwwIC0xNS44NTkyLDMuMDE5NjggLTIxLjg5NjQsOS4wNTY4OGMtNS44NTE0NCw1Ljg0NDU2IC05LjA3MDMxLDEzLjYyNjY0IC05LjA3MDMxLDIxLjg5NjRjMCw4LjI2NjMyIDMuMjIyMzEsMTYuMDM4NDEgOS4wNzAzMSwyMS44ODI5N2MxLjczNzIsMS43MzcyIDMuNjM4MjMsMy4xODYxNCA1LjY0Mzc1LDQuNDE0MjJsNS4wNTI1LC01LjA1MjVjLTIuMDk0OTYsLTEuMDg3MDQgLTQuMDc0MDQsLTIuNDY4MjYgLTUuODMxODgsLTQuMjI2MWMtNC41NDc2OCwtNC41NDc2OCAtNy4wNTQ2OSwtMTAuNTg5MjQgLTcuMDU0NjksLTE3LjAxODZjMCwtNi40MzI4IDIuNTA3MDEsLTEyLjQ4NDM1IDcuMDU0NjksLTE3LjAzMjAzYzQuNjk1NiwtNC42OTIxNiAxMC44NTczOSwtNy4wNDEyNSAxNy4wMjUzMSwtNy4wNDEyNWM2LjE2NzkyLDAgMTIuMzI5NzEsMi4zNDkwOSAxNy4wMjUzMSw3LjA0MTI1YzEuNzM3MiwxLjczNzIgMy4xMzUyOSwzLjcwOTU1IDQuMjM5NTMsNS44MjUxNWw1LjA1MjUsLTUuMDUyNWMtMS4yNDE4NCwtMi4wMTkyOCAtMi43MDQzOCwtMy45MjA0NyAtNC40MjA5NCwtNS42MzcwM2MtNi4wMzU0OCwtNi4wMzcyIC0xMy45NjE3OCwtOS4wNTY4OCAtMjEuODg5NjksLTkuMDU2ODh6TTE1NC43NDYyNSw1NC45OTI5N2MtMS44OTcyMiwwLjAyOTY2IC0zLjQxMjIzLDEuNTg5NzYgLTMuMzg2MjUsMy40ODcwM3YzLjQ0aC0zLjQ0Yy0xLjI0MDU5LC0wLjAxNzU0IC0yLjM5NDUyLDAuNjM0MjUgLTMuMDE5OTMsMS43MDU4Yy0wLjYyNTQxLDEuMDcxNTUgLTAuNjI1NDEsMi4zOTY4NCAwLDMuNDY4MzljMC42MjU0MSwxLjA3MTU1IDEuNzc5MzUsMS43MjMzNSAzLjAxOTkzLDEuNzA1OGgzLjQ0djMuNDRjLTAuMDE3NTQsMS4yNDA1OSAwLjYzNDI1LDIuMzk0NTIgMS43MDU4LDMuMDE5OTNjMS4wNzE1NSwwLjYyNTQxIDIuMzk2ODQsMC42MjU0MSAzLjQ2ODM5LDBjMS4wNzE1NSwtMC42MjU0MSAxLjcyMzM1LC0xLjc3OTM1IDEuNzA1OCwtMy4wMTk5M3YtMy40NGgzLjQ0YzEuMjQwNTksMC4wMTc1NCAyLjM5NDUyLC0wLjYzNDI1IDMuMDE5OTMsLTEuNzA1OGMwLjYyNTQxLC0xLjA3MTU1IDAuNjI1NDEsLTIuMzk2ODQgMCwtMy40NjgzOWMtMC42MjU0MSwtMS4wNzE1NSAtMS43NzkzNSwtMS43MjMzNSAtMy4wMTk5MywtMS43MDU4aC0zLjQ0di0zLjQ0YzAuMDEyNzMsLTAuOTI5ODMgLTAuMzUxNDksLTEuODI1MjIgLTEuMDA5NjcsLTIuNDgyMTRjLTAuNjU4MTksLTAuNjU2OTIgLTEuNTU0MjcsLTEuMDE5NDIgLTIuNDg0MDgsLTEuMDA0ODl6TTEwLjMyLDY1LjM2Yy0xLjI0MDU5LC0wLjAxNzU0IC0yLjM5NDUyLDAuNjM0MjUgLTMuMDE5OTMsMS43MDU4Yy0wLjYyNTQxLDEuMDcxNTUgLTAuNjI1NDEsMi4zOTY4NCAwLDMuNDY4MzljMC42MjU0MSwxLjA3MTU1IDEuNzc5MzUsMS43MjMzNSAzLjAxOTkzLDEuNzA1OGgxNy4yYzEuMjQwNTksMC4wMTc1NCAyLjM5NDUyLC0wLjYzNDI1IDMuMDE5OTMsLTEuNzA1OGMwLjYyNTQxLC0xLjA3MTU1IDAuNjI1NDEsLTIuMzk2ODQgMCwtMy40NjgzOWMtMC42MjU0MSwtMS4wNzE1NSAtMS43NzkzNSwtMS43MjMzNSAtMy4wMTk5MywtMS43MDU4ek0xMjksODZjLTE5LjkwODU2LDAgLTM2LjEyLDE2LjIxMTQ0IC0zNi4xMiwzNi4xMmMwLDE5LjkwODU2IDE2LjIxMTQ0LDM2LjEyIDM2LjEyLDM2LjEyYzE5LjkwODU2LDAgMzYuMTIsLTE2LjIxMTQ0IDM2LjEyLC0zNi4xMmMwLC0wLjgxNjIzIC0wLjA2OTAxLC0xLjQ1Mzg0IC0wLjA5NDA2LC0xLjkyMTU2Yy0wLjA4LC0xLjQ5MjY4IC0xLjExNDcyLC0yLjc2MjkgLTIuNTYwMzksLTMuMTQzMWMtMS40NDU2NywtMC4zODAyIC0yLjk3MTQxLDAuMjE2NjQgLTMuNzc1MzksMS40NzY4NWMtMy4zNjIxMSw1LjI1ODc2IC05LjIwNjc2LDguNzQ3ODEgLTE1LjkzMDE1LDguNzQ3ODFjLTEwLjQ5MDY2LDAgLTE4LjkyLC04LjQyOTM0IC0xOC45MiwtMTguOTJjMCwtNi43MjM0IDMuNDg5MDYsLTEyLjU2ODA1IDguNzQ3ODEsLTE1LjkzMDE1YzEuMjYwMjEsLTAuODAzOTggMS44NTcwNCwtMi4zMjk3MiAxLjQ3Njg1LC0zLjc3NTM5Yy0wLjM4MDIsLTEuNDQ1NjcgLTEuNjUwNDEsLTIuNDgwMzkgLTMuMTQzMSwtMi41NjAzOWMtMC40Njc3MywtMC4wMjUwNiAtMS4xMDUzMywtMC4wOTQwNiAtMS45MjE1NiwtMC4wOTQwNnpNMTIxLjU4MjUsOTQuMzcxNTZjLTIuNzIzNDUsNC4wODcwMSAtNC42MjI1LDguNzIzMDEgLTQuNjIyNSwxMy45ODg0NGMwLDE0LjIwODU0IDExLjU5MTQ2LDI1LjggMjUuOCwyNS44YzUuMjY1NDMsMCA5LjkwMTQzLC0xLjg5OTA1IDEzLjk4ODQ0LC00LjYyMjVjLTMuMzM0OTEsMTIuNDgyMjggLTE0LjE5MDk4LDIxLjgyMjUgLTI3Ljc0ODQ0LDIxLjgyMjVjLTE2LjE5MDgsMCAtMjkuMjQsLTEzLjA0OTIgLTI5LjI0LC0yOS4yNGMwLC0xMy41NTc0NiA5LjM0MDIyLC0yNC40MTM1MyAyMS44MjI1LC0yNy43NDg0NHpNMzkuNTQ2NTYsOTQuNTEyNjVjLTAuODkzNzEsMC4wMjY2MyAtMS43NDE5NCwwLjQwMDE0IC0yLjM2NSwxLjA0MTQxbC0xMi4xNjc2NiwxMi4xNjc2NWMtMC44OTg2MywwLjg2MjgyIC0xLjI2MDYxLDIuMTQ0MDMgLTAuOTQ2MzQsMy4zNDk1M2MwLjMxNDI3LDEuMjA1NSAxLjI1NTY5LDIuMTQ2OTEgMi40NjExOSwyLjQ2MTE5YzEuMjA1NSwwLjMxNDI3IDIuNDg2NzEsLTAuMDQ3NzEgMy4zNDk1MywtMC45NDYzNGwxMi4xNjc2NiwtMTIuMTY3NjZjMS4wMTc0MiwtMC45ODg5NyAxLjMyMzMzLC0yLjUwMTExIDAuNzcwMzQsLTMuODA3NzhjLTAuNTUyOTksLTEuMzA2NjcgLTEuODUxNDUsLTIuMTM5ODMgLTMuMjY5NzEsLTIuMDk4ek03NS42MjYyNSwxNDQuNDMyOTdjLTEuODk3MjIsMC4wMjk2NiAtMy40MTIyMywxLjU4OTc2IC0zLjM4NjI1LDMuNDg3MDN2My40NGgtMy40NGMtMS4yNDA1OSwtMC4wMTc1NCAtMi4zOTQ1MiwwLjYzNDI1IC0zLjAxOTkzLDEuNzA1OGMtMC42MjU0MSwxLjA3MTU1IC0wLjYyNTQxLDIuMzk2ODQgMCwzLjQ2ODM5YzAuNjI1NDEsMS4wNzE1NSAxLjc3OTM1LDEuNzIzMzUgMy4wMTk5MywxLjcwNThoMy40NHYzLjQ0Yy0wLjAxNzU0LDEuMjQwNTkgMC42MzQyNSwyLjM5NDUyIDEuNzA1OCwzLjAxOTkzYzEuMDcxNTUsMC42MjU0MSAyLjM5Njg0LDAuNjI1NDEgMy40NjgzOSwwYzEuMDcxNTUsLTAuNjI1NDEgMS43MjMzNSwtMS43NzkzNSAxLjcwNTgsLTMuMDE5OTN2LTMuNDRoMy40NGMxLjI0MDU5LDAuMDE3NTQgMi4zOTQ1MiwtMC42MzQyNSAzLjAxOTkzLC0xLjcwNThjMC42MjU0MSwtMS4wNzE1NSAwLjYyNTQxLC0yLjM5Njg0IDAsLTMuNDY4MzljLTAuNjI1NDEsLTEuMDcxNTUgLTEuNzc5MzUsLTEuNzIzMzUgLTMuMDE5OTMsLTEuNzA1OGgtMy40NHYtMy40NGMwLjAxMjczLC0wLjkyOTgzIC0wLjM1MTQ5LC0xLjgyNTIyIC0xLjAwOTY3LC0yLjQ4MjE0Yy0wLjY1ODE5LC0wLjY1NjkyIC0xLjU1NDI3LC0xLjAxOTQyIC0yLjQ4NDA4LC0xLjAwNDg5eiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+" /></button>
+        <button id="dark" class="active" onclick="setActive(this); setTheme('dark', 'light', 'dark')"><img
+                src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHZpZXdCb3g9IjAgMCAxNzIgMTcyIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9Im5vbnplcm8iIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2UtZGFzaGFycmF5PSIiIHN0cm9rZS1kYXNob2Zmc2V0PSIwIiBmb250LWZhbWlseT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vbmUiIGZvbnQtc2l6ZT0ibm9uZSIgdGV4dC1hbmNob3I9Im5vbmUiIHN0eWxlPSJtaXgtYmxlbmQtbW9kZTogbm9ybWFsIj48cGF0aCBkPSJNMCwxNzJ2LTE3MmgxNzJ2MTcyeiIgZmlsbD0ibm9uZSI+PC9wYXRoPjxnIGZpbGw9IiMwMDAwMDAiPjxwYXRoIGQ9Ik01NC43MTc1LDIwLjUzMjVjLTAuMTQ3ODEsMC4wMjY4OCAtMC4yOTU2MiwwLjA2NzE5IC0wLjQzLDAuMTA3NWMtMS41OTkwNiwwLjM2MjgxIC0yLjcyNzgxLDEuODAwNjMgLTIuNjg3NSwzLjQ0djMuNDRoLTMuNDRjLTAuMTA3NSwwIC0wLjIxNSwwIC0wLjMyMjUsMGMtMS44OTQ2OSwwLjA5NDA2IC0zLjM3MjgxLDEuNzA2NTYgLTMuMjc4NzUsMy42MDEyNWMwLjA5NDA2LDEuODk0NjkgMS43MDY1NiwzLjM3MjgxIDMuNjAxMjUsMy4yNzg3NWgzLjQ0djMuNDRjLTAuMDEzNDQsMS4yMzYyNSAwLjYzMTU2LDIuMzkxODggMS43MDY1NiwzLjAyMzQ0YzEuMDc1LDAuNjE4MTMgMi4zOTE4NywwLjYxODEzIDMuNDY2ODcsMGMxLjA3NSwtMC42MzE1NiAxLjcyLC0xLjc4NzE5IDEuNzA2NTYsLTMuMDIzNDR2LTMuNDRoMy40NGMxLjIzNjI1LDAuMDEzNDQgMi4zOTE4OCwtMC42MzE1NiAzLjAyMzQ0LC0xLjcwNjU2YzAuNjE4MTMsLTEuMDc1IDAuNjE4MTMsLTIuMzkxODcgMCwtMy40NjY4N2MtMC42MzE1NiwtMS4wNzUgLTEuNzg3MTksLTEuNzIgLTMuMDIzNDQsLTEuNzA2NTZoLTMuNDR2LTMuNDRjMC4wNDAzMSwtMC45OTQzNyAtMC4zNjI4MSwtMS45NDg0NCAtMS4wNzUsLTIuNjIwMzFjLTAuNzI1NjIsLTAuNjg1MzEgLTEuNzA2NTYsLTEuMDIxMjUgLTIuNjg3NSwtMC45MjcxOXpNOTcuMzk1LDQ0LjYxMjVsLTQuNTE1LDAuNjQ1Yy0yMy4zMjc1LDMuMzMyNSAtNDEuMjgsMjMuMzk0NjkgLTQxLjI4LDQ3LjYyMjVjMCwyNi41NTI1IDIxLjYwNzUsNDguMTYgNDguMTYsNDguMTZjMjQuMjI3ODEsMCA0NC4yNzY1NiwtMTcuOTUyNSA0Ny42MjI1LC00MS4yOGwwLjY0NSwtNC41MTVsLTQuNTE1LDAuNjQ1Yy0yLjAwMjE5LDAuMjgyMTkgLTMuOTY0MDYsMC40MyAtNS45MTI1LDAuNDNjLTIyLjg0Mzc1LDAgLTQxLjI4LC0xOC40MzYyNSAtNDEuMjgsLTQxLjI4YzAsLTEuOTQ4NDQgMC4xNDc4MSwtMy45MTAzMSAwLjQzLC01LjkxMjV6TTg5LjU0NzUsNTMuNDI3NWMtMC4wMjY4NywwLjU1MDk0IC0wLjEwNzUsMS4wNDgxMyAtMC4xMDc1LDEuNjEyNWMwLDI2LjU1MjUgMjEuNjA3NSw0OC4xNiA0OC4xNiw0OC4xNmMwLjU2NDM4LDAgMS4wNjE1NiwtMC4wODA2MiAxLjYxMjUsLTAuMTA3NWMtNC42MDkwNiwxNy43NjQzOCAtMjAuMjIzNDQsMzEuMDY3NSAtMzkuNDUyNSwzMS4wNjc1Yy0yMi44NDM3NSwwIC00MS4yOCwtMTguNDM2MjUgLTQxLjI4LC00MS4yOGMwLC0xOS4yMjkwNiAxMy4zMDMxMywtMzQuODU2ODcgMzEuMDY3NSwtMzkuNDUyNXpNMjcuMTk3NSw2MS44MTI1Yy0wLjE0NzgxLDAuMDI2ODggLTAuMjk1NjIsMC4wNjcxOSAtMC40MywwLjEwNzVjLTEuNTk5MDYsMC4zNjI4MSAtMi43Mjc4MSwxLjgwMDYzIC0yLjY4NzUsMy40NGMtMC4xMDc1LDAgLTAuMjE1LDAgLTAuMzIyNSwwYy0xLjg5NDY5LDAuMDk0MDYgLTMuMzcyODEsMS43MDY1NiAtMy4yNzg3NSwzLjYwMTI1YzAuMDk0MDYsMS44OTQ2OSAxLjcwNjU2LDMuMzcyODEgMy42MDEyNSwzLjI3ODc1Yy0wLjAxMzQ0LDEuMjM2MjUgMC42MzE1NiwyLjM5MTg4IDEuNzA2NTYsMy4wMjM0NGMxLjA3NSwwLjYxODEzIDIuMzkxODcsMC42MTgxMyAzLjQ2Njg3LDBjMS4wNzUsLTAuNjMxNTYgMS43MiwtMS43ODcxOSAxLjcwNjU2LC0zLjAyMzQ0YzEuMjM2MjUsMC4wMTM0NCAyLjM5MTg4LC0wLjYzMTU2IDMuMDIzNDQsLTEuNzA2NTZjMC42MTgxMywtMS4wNzUgMC42MTgxMywtMi4zOTE4NyAwLC0zLjQ2Njg3Yy0wLjYzMTU2LC0xLjA3NSAtMS43ODcxOSwtMS43MiAtMy4wMjM0NCwtMS43MDY1NmMwLjA0MDMxLC0wLjk5NDM3IC0wLjM2MjgxLC0xLjk0ODQ0IC0xLjA3NSwtMi42MjAzMWMtMC43MjU2MiwtMC42ODUzMSAtMS43MDY1NiwtMS4wMjEyNSAtMi42ODc1LC0wLjkyNzE5eiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+" /></button>
+    </div>
+
+    <div class="container-xl" style="margin-top: 4rem; margin-bottom:4rem;">
+        <div class="markdown-body">
+            <h1>
+                <a id="information-system-architecture---webservices" class="anchor"
+                    href="#information-system-architecture---webservices" aria-hidden="true"><span aria-hidden="true"
+                        class="octicon octicon-link"></span></a>Information System Architecture - WebServices
+            </h1>
+            <br>
+            <p>Authors: Théo MILLAIRE, Pierre FOURRE &amp; Guillaume ELAMBERT</p>
+            <br>
+            <h2>
+                <a id="table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span
+                        aria-hidden="true" class="octicon octicon-link"></span></a>Table of contents
+            </h2>
+            <ul>
+                <li><a href="#1-exercice-1">1. Exercice 1</a></li>
+                <li>
+                    <a href="#2-api-documentation">2. API Documentation</a>
+                    <ul>
+                        <li><a href="#21-list-products">2.1. List products</a></li>
+                        <li>
+                            <a href="#22-get-a-product">2.2. Get a product</a>
+                            <ul>
+                                <li><a href="#get-product-comments">Get product comments</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#23-create-a-product">2.3. Create a product</a></li>
+                        <li><a href="#24-update-a-product">2.4. Update a product</a></li>
+                        <li><a href="#25-delete-a-product">2.5. Delete a product</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <p><br><br></p>
+            <h2>
+                <a id="1-exercice-1" class="anchor" href="#1-exercice-1" aria-hidden="true"><span aria-hidden="true"
+                        class="octicon octicon-link"></span></a>1. Exercice 1
+            </h2>
+            <table>
+                <thead>
+                    <th align="center">N°</th>
+                    <th align="center">URI</th>
+                    <th align="center">Input</th>
+                    <th align="center">Output</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2" align="center">1</td>
+                        <td rowspan="2">GET /products</td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">2</td>
+                        <td rowspan="2">GET /products/<strong><code>{product_id}</code></strong>
+                        </td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">3</td>
+                        <td rowspan="2">GET /products?category=<strong><code>{category_label}</code></strong>
+                        </td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">4</td>
+                        <td rowspan="2">GET /products?order=<strong><code>{asc | desc}</code></strong>
+                        </td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">5</td>
+                        <td rowspan="2">GET /products?currency=<strong><code>{currency_string}</code></strong>
+                        </td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td align="center">6</td>
+                        <td>DELETE /products/<strong><code>{product_id}</code></strong>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">7</td>
+                        <td rowspan="2">POST /products/</td>
+                        <td>application/json</td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">8</td>
+                        <td rowspan="2">PUT /products/<strong><code>{product_id}</code></strong>
+                        </td>
+                        <td>application/json</td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">9</td>
+                        <td rowspan="2">PATCH /products/<strong><code>{product_id}</code></strong>
+                        </td>
+                        <td>application/json</td>
+                        <td rowspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" align="center">10</td>
+                        <td rowspan="2">GET /products/<strong><code>{product_id}</code></strong>/comments</td>
+                        <td rowspan="2"></td>
+                        <td>application/json</td>
+                    </tr>
+                    <tr>
+                        <td>application/xml</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p><br><br></p>
+            <h2>
+                <a id="2-api-documentation" class="anchor" href="#2-api-documentation" aria-hidden="true"><span
+                        aria-hidden="true" class="octicon octicon-link"></span></a>2. API Documentation
+            </h2>
+            <details>
+                <summary>
+                    <h3>
+                        <a id="21-list-products" class="anchor" href="#21-list-products" aria-hidden="true"><span
+                                aria-hidden="true" class="octicon octicon-link"></span></a>2.1. List products
+                    </h3>
+                </summary>
+                <br>
+                <p>Endpoint : <strong><code>/products</code></strong> <br>
+                    Method : <strong><code>GET</code></strong></p>
+                <br>
+                <p>The following parameters can be used individually or combined.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Query parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>order</code></strong> <em>string</em> <br>
+                                <p>Sorts products on price.</p> Can be one of : <em><code>asc</code></em> or
+                                <em><code>desc</code></em> <br> Default : <em><code>asc</code></em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>category</code></strong> <em>string</em> <br> Filters products on their
+                                category label.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>currency</code></strong> <em>string</em> <br>
+                                <p>Returns the products with a new field : <strong><code>priceInCurrency</code></strong>
+                                    containing the price of the product converted to the specified currency.</p> Can be
+                                any international currency abbreviations   (i.e. "usd", "gbp",...) <br> Non case
+                                sensitive.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <p><br><br></p>
+            <details>
+                <summary>
+                    <h3>
+                        <a id="22-get-a-product" class="anchor" href="#22-get-a-product" aria-hidden="true"><span
+                                aria-hidden="true" class="octicon octicon-link"></span></a>2.2. Get a product
+                    </h3>
+                </summary>
+                <br>
+                <p>Endpoint : <strong><code>/products/{product_id}</code></strong> <br>
+                    Method : <strong><code>GET</code></strong></p>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Path parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>product_id</code></strong> <em>int</em> <br> The id of the wanted product.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <p>The following parameters can be used individually or combined.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Query parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>order</code></strong> <em>string</em> <br>
+                                <p>Sorts products on price.</p> Can be one of : <em><code>asc</code></em> or
+                                <em><code>desc</code></em> <br> Default : <em><code>asc</code></em>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>category</code></strong> <em>string</em> <br> Filters products on their
+                                category label.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>currency</code></strong> <em>string</em> <br>
+                                <p>Returns the products with a new field : <strong><code>priceInCurrency</code></strong>
+                                    containing the price of the product converted to the specified currency.</p> Can be
+                                any international currency abbreviations   (i.e. "usd", "gbp",...) <br> Non case
+                                sensitive.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <details style="margin-left: 2rem;">
+                    <summary>
+                        <h4>
+                            <a id="get-product-comments" class="anchor" href="#get-product-comments"
+                                aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Get
+                            product comments
+                        </h4>
+                    </summary>
+                    <br>
+                    <p>Endpoint : <strong><code>/products/{product_id}/comments</code></strong> <br>
+                        Method : <strong><code>GET</code></strong></p>
+                    <br>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th align="left">Path parameters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td align="left">
+                                    <strong><code>product_id</code></strong> <em>int</em> <br> The id of the wanted
+                                    product.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </details>
+            </details>
+            <p><br><br></p>
+            <details>
+                <summary>
+                    <h3>
+                        <a id="23-create-a-product" class="anchor" href="#23-create-a-product" aria-hidden="true"><span
+                                aria-hidden="true" class="octicon octicon-link"></span></a>2.3. Create a product
+                    </h3>
+                </summary>
+                <br>
+                <p>Endpoint : <strong><code>/products</code></strong> <br>
+                    Method : <strong><code>POST</code></strong></p>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Body parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>label</code></strong> <em>int</em> <br> The label of the product.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>category</code></strong> <em>string</em> <br> The product category label.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>stock</code></strong> <em>int</em> <br> The product stock quantity.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <span id="createProductPriceParam"><strong><code>priceInEuro</code></strong> or
+                                    <strong><code>priceInCurrency</code></strong></span> <em>double</em> <br> The price
+                                of the product in : <ul>
+                                    <li>Euro if <strong><code>priceInEuro</code></strong> specified</li>
+                                    <li>
+                                        <a href="#createProductCurrencyParam"><strong><code>currency</code></strong></a>
+                                        if both <a
+                                            href="#createProductCurrencyParam"><strong><code>currency</code></strong></a>
+                                        and <strong><code>priceInCurrency</code></strong> parameters are specified.
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Query parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <span id="createProductCurrencyParam"><strong><code>currency</code></strong></span>
+                                <em>string</em> <br>
+                                <p>Update the price of the product using a conversion from the specified
+                                    <strong><code>currency</code></strong> to Euro. See <a
+                                        href="#createProductPriceParam"><strong><code>priceInCurrency</code></strong></a>.
+                                </p> Can be any international currency abbreviations   (i.e. "usd", "gbp",...) <br> Non
+                                case sensitive.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <p><br><br></p>
+            <details>
+                <summary>
+                    <h3>
+                        <a id="24-update-a-product" class="anchor" href="#24-update-a-product" aria-hidden="true"><span
+                                aria-hidden="true" class="octicon octicon-link"></span></a>2.4. Update a product
+                    </h3>
+                </summary>
+                <br>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Endpoint</th>
+                            <td colspan="2" align="center"><strong><code>/products/{product_id}</code></strong></td>
+                        </tr>
+                        <tr>
+                            <th>Method</th>
+                            <td align="center"><strong><code>PUT</code></strong></td>
+                            <td align="center"><strong><code>PATCH</code></strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Path parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>product_id</code></strong> <em>int</em> <br> The id of the you want to
+                                update.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Body parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>label</code></strong> <em>int</em> <br> The label of the product.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>category</code></strong> <em>string</em> <br> The product category label.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <strong><code>stock</code></strong> <em>int</em> <br> The product stock quantity.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                <span id="updateProductPriceParam"><strong><code>priceInEuro</code></strong> or
+                                    <strong><code>priceInCurrency</code></strong></span> <em>double</em> <br> The price
+                                of the product in : <ul>
+                                    <li>Euro if <strong><code>priceInEuro</code></strong> specified</li>
+                                    <li>
+                                        <a href="#updateProductCurrencyParam"><strong><code>currency</code></strong></a>
+                                        if both <a
+                                            href="#updateProductCurrencyParam"><strong><code>currency</code></strong></a>
+                                        and <strong><code>priceInCurrency</code></strong> parameters are specified.
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Query parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <span id="updateProductCurrencyParam"><strong><code>currency</code></strong></span>
+                                <em>string</em> <br>
+                                <p>Update the price of the product using a conversion from the specified
+                                    <strong><code>currency</code></strong> to Euro. See <a
+                                        href="#updateProductPriceParam"><strong><code>priceInCurrency</code></strong></a>.
+                                </p> Can be any international currency abbreviations   (i.e. "usd", "gbp",...) <br> Non
+                                case sensitive.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <p><br><br></p>
+            <details>
+                <summary>
+                    <h3>
+                        <a id="25-delete-a-product" class="anchor" href="#25-delete-a-product" aria-hidden="true"><span
+                                aria-hidden="true" class="octicon octicon-link"></span></a>2.5. Delete a product
+                    </h3>
+                </summary>
+                <br>
+                <p>Endpoint : <strong><code>/products/{product_id}</code></strong> <br>
+                    Method : <strong><code>DELETE</code></strong></p>
+                <br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th align="left">Path parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td align="left">
+                                <strong><code>product_id</code></strong> <em>int</em> <br> The id of the you want to
+                                delete.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+        </div>
+    </div>
+</body>
+
+</html>
